@@ -1,0 +1,36 @@
+package: github.com/kube-node/archon-nodeset
+ignore:
+  - net
+  - net/rpc
+  - net/url
+  - net/http
+  - net/textproto
+import:
+- package: k8s.io/apimachinery
+  version: release-1.6
+- package: k8s.io/client-go
+  version: 3.0.0-beta.0
+- package: github.com/kube-node/nodeset
+  repo: https://github.com/ledzep2/nodeset
+- package: github.com/emicklei/go-restful
+  version: v1.2
+- package: kubeup.com/archon
+  repo: https://github.com/kubeup/archon
+  subpackages:
+  - pkg/cluster
+- package: github.com/spf13/cobra
+  version: 16c014f1a19d865b765b420e74508f80eb831ada
+- package: github.com/spf13/pflag
+  version: c7e63cf4530bcd3ba943729cee0efeff2ebea63f
+- package: k8s.io/kubernetes
+  version: ~v1.6.0
+  subpackages:
+    - pkg/util/configz
+    - pkg/util/logs
+    - pkg/util/flag
+    - pkg/server/healthz
+    - pkg/version/verflag
+    - pkg/version/promethues
+    - client/leaderelection
+    - client/leaderelection/resources
+
