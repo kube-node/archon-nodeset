@@ -20,12 +20,17 @@ import (
 // Construct a NodeSet from InstanceGroup
 func InstanceGroupToNodeClass(ig *cluster.InstanceGroup) (nc *v1alpha1.NodeClass, err error) {
 	tpl := ig.Spec.Template
+	if len(tpl.Secrets) > 0 {
+		err = fmt.Errorf("Secrets in InstanceGroup.Spec.Template are not supported by NodeSet")
+		return
+	}
+
 	nodeConfig := &nodeset.ArchonNodeConfig{
 		OS:                       tpl.Spec.OS,
 		Image:                    tpl.Spec.Image,
 		InstanceType:             tpl.Spec.InstanceType,
 		NetworkName:              tpl.Spec.NetworkName,
-		Hostname:                 tpl.Spec.NetworkName,
+		Hostname:                 tpl.Spec.Hostname,
 		Configs:                  tpl.Spec.Configs,
 		Annotations:              tpl.ObjectMeta.Annotations,
 		MinReadySeconds:          ig.Spec.MinReadySeconds,

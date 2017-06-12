@@ -40,6 +40,7 @@ var (
 	ArchonNodeSetControllerKey = "archon.nodeset.k8s.io"
 	AnnotationPrefix           = "archon.nodeset.k8s.io/"
 	NodeSetResourceVersionKey  = AnnotationPrefix + "nodeset-resource-version"
+	NSIGAnnotationKey          = AnnotationPrefix + "nodeset-instance-group"
 )
 
 func getDesiredSelectors(ns *v1alpha1.NodeSet) map[string]string {

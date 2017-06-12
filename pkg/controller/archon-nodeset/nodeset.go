@@ -412,6 +412,9 @@ func (nsc *NodeSetController) NodeSetToInstanceGroup(ns *v1alpha1.NodeSet) (ig *
 	}
 
 	selector := getDesiredSelectors(ns)
+	if len(selector) == 0 {
+		selector[NSIGAnnotationKey] = ns.Name
+	}
 
 	nodeConfig := &ArchonNodeConfig{}
 	err = decodeAndMergeArchonNodeConfig(nc.Config, nodeConfig)
