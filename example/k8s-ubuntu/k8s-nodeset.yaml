@@ -1,0 +1,9 @@
+kind: NodeSet
+apiVersion: nodeset.k8s.io/v1alpha1
+metadata:
+  name: ns1
+  namespace: default
+spec:
+  nodeClass: k8s-node
+  nodeSetController: archon.nodeset.k8s.io
+  replicas: 1

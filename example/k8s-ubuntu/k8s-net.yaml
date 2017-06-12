@@ -1,0 +1,19 @@
+apiVersion: archon.kubeup.com/v1
+kind: Network
+metadata:
+  name: k8s-net
+  annotations:
+    aws.archon.kubeup.com/name-servers: "169.254.169.253"
+    aws.archon.kubeup.com/domain-name: "us-west-1.compute.internal"
+    aws.archon.kubeup.com/vpc-id: "your-vpc-id"
+    aws.archon.kubeup.com/internet-gateway-id: "your-internate-gateway-id"
+    aws.archon.kubeup.com/subnet-id: "your-subnet-id"
+    aws.archon.kubeup.com/route-table-id: "your-route-table-id"
+  labels:
+    KubernetesCluster: "kubernetes"
+spec:
+  region: us-west-1
+  subnet: 10.99.0.1/24
+  zone: us-west-1a
+status:
+  phase: Running

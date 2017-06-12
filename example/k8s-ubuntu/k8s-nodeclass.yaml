@@ -1,0 +1,52 @@
+kind: NodeClass
+apiVersion: nodeset.k8s.io/v1alpha1
+metadata:
+  name: k8s-node
+  namespace: default
+config:
+  configs:
+  - data:
+      master-ip: MASTER_IP
+      token: TOKEN
+    name: k8s
+  image: ami-93ef68f0
+  instanceType: t2.small
+  networkName: k8s-net
+  os: Ubuntu
+resources:
+- name: ubuntu
+  reference:
+    apiVersion: archon.kubeup.com/v1
+    kind: User
+    name: ubuntu
+  type: Reference
+- name: apt
+  path: /config/apt
+  template: "sources:\n  kubernetes:\n    source: deb http://apt.kubernetes.io/ kubernetes-xenial
+    main\n    key: |\n      -----BEGIN PGP PUBLIC KEY BLOCK-----\n      \n      mQENBFUd6rIBCAD6mhKRHDn3UrCeLDp7U5IE7AhhrOCPpqGF7mfTemZYHf/5Jdjx\n
+    \     cOxoSFlK7zwmFr3lVqJ+tJ9L1wd1K6P7RrtaNwCiZyeNPf/Y86AJ5NJwBe0VD0xH\n      TXzPNTqRSByVYtdN94NoltXUYFAAPZYQls0x0nUD1hLMlOlC2HdTPrD1PMCnYq/N\n
+    \     uL/Vk8sWrcUt4DIS+0RDQ8tKKe5PSV0+PnmaJvdF5CKawhh0qGTklS2MXTyKFoqj\n      XgYDfY2EodI9ogT/LGr9Lm/+u4OFPvmN9VN6UG+s0DgJjWvpbmuHL/ZIRwMEn/tp\n
+    \     uneaLTO7h1dCrXC849PiJ8wSkGzBnuJQUbXnABEBAAG0QEdvb2dsZSBDbG91ZCBQ\n      YWNrYWdlcyBBdXRvbWF0aWMgU2lnbmluZyBLZXkgPGdjLXRlYW1AZ29vZ2xlLmNv\n
+    \     bT6JAT4EEwECACgFAlUd6rICGy8FCQWjmoAGCwkIBwMCBhUIAgkKCwQWAgMBAh4B\n      AheAAAoJEDdGwginMXsPcLcIAKi2yNhJMbu4zWQ2tM/rJFovazcY28MF2rDWGOnc\n
+    \     9giHXOH0/BoMBcd8rw0lgjmOosBdM2JT0HWZIxC/Gdt7NSRA0WOlJe04u82/o3OH\n      WDgTdm9MS42noSP0mvNzNALBbQnlZHU0kvt3sV1YsnrxljoIuvxKWLLwren/GVsh\n
+    \     FLPwONjw3f9Fan6GWxJyn/dkX3OSUGaduzcygw51vksBQiUZLCD2Tlxyr9NvkZYT\n      qiaWW78L6regvATsLc9L/dQUiSMQZIK6NglmHE+cuSaoK0H4ruNKeTiQUw/EGFaL\n
+    \     ecay6Qy/s3Hk7K0QLd+gl0hZ1w1VzIeXLo2BRlqnjOYFX4A=\n      =HVTm\n      -----END
+    PGP PUBLIC KEY BLOCK-----"
+  type: File
+- name: packages
+  path: /config/packages
+  template: |-
+    - docker.io
+    - kubelet
+    - kubeadm
+    - kubernetes-cni
+  type: File
+- name: kubeadm
+  path: /config/runcmd/kubeadm
+  template: |-
+    - kubeadm
+    - join
+    - --token
+    - {{ index .Configs "k8s" "token" }}
+    - {{ index .Configs "k8s" "master-ip" }}
+  type: File
